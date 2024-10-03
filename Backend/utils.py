@@ -1,11 +1,11 @@
-import os
-import sys
 import json
-import random
 import logging
+import os
+import random
+import sys
 import zipfile
-import requests
 
+import requests
 from termcolor import colored
 
 # Configure logging
@@ -36,6 +36,7 @@ def clean_dir(path: str) -> None:
         logger.info(colored(f"Cleaned {path} directory", "green"))
     except Exception as e:
         logger.error(f"Error occurred while cleaning directory {path}: {str(e)}")
+
 
 def fetch_songs(zip_url: str) -> None:
     """
@@ -77,6 +78,7 @@ def fetch_songs(zip_url: str) -> None:
     except Exception as e:
         logger.error(colored(f"Error occurred while fetching songs: {str(e)}", "red"))
 
+
 def choose_random_song() -> str:
     """
     Chooses a random song from the songs/ directory.
@@ -104,8 +106,9 @@ def check_env_vars() -> None:
         SystemExit: If any required environment variables are missing.
     """
     try:
+        # required_vars = ["PEXELS_API_KEY", "IMAGEMAGICK_BINARY"]
         required_vars = ["PEXELS_API_KEY", "TIKTOK_SESSION_ID", "IMAGEMAGICK_BINARY"]
-        missing_vars = [var + os.getenv(var)  for var in required_vars if os.getenv(var) is None or (len(os.getenv(var)) == 0)]  
+        missing_vars = [var + os.getenv(var) for var in required_vars if os.getenv(var) is None or (len(os.getenv(var)) == 0)]
 
         if missing_vars:
             missing_vars_str = ", ".join(missing_vars)
@@ -115,4 +118,3 @@ def check_env_vars() -> None:
     except Exception as e:
         logger.error(f"Error occurred while checking environment variables: {str(e)}")
         sys.exit(1)  # Aborts the program if an unexpected error occurs
-

@@ -1,6 +1,8 @@
+import logging
 import os
-from utils import *
+
 from dotenv import load_dotenv
+from utils import *
 
 # Load environment variables
 load_dotenv("../.env")
@@ -8,19 +10,18 @@ load_dotenv("../.env")
 # This must happen before importing video which uses API keys without checking
 check_env_vars()
 
-from gpt import *
-from video import *
-from search import *
 from uuid import uuid4
-from tiktokvoice import *
-from flask_cors import CORS
-from termcolor import colored
-from youtube import upload_video
+
 from apiclient.errors import HttpError
-from flask import Flask, request, jsonify
+from flask import Flask, jsonify, request
+from flask_cors import CORS
+from gpt import *
 from moviepy.config import change_settings
-
-
+from search import *
+from termcolor import colored
+from tiktokvoice import *
+from video import *
+from youtube import upload_video
 
 # Set environment variables
 SESSION_ID = os.getenv("TIKTOK_SESSION_ID")
@@ -329,6 +330,7 @@ def generate():
         )
     except Exception as err:
         print(colored(f"[-] Error: {str(err)}", "red"))
+        logging.exception(err)
         return jsonify(
             {
                 "status": "error",
